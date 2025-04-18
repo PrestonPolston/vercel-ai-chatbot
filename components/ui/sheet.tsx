@@ -64,6 +64,29 @@ const SheetContent = React.forwardRef<
 ))
 SheetContent.displayName = SheetPrimitive.Content.displayName
 
+const RightSheetContent = React.forwardRef<
+  React.ElementRef<typeof SheetPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof SheetPrimitive.Content>
+>(({ className, children, ...props }, ref) => (
+  <SheetPortal>
+    <SheetPrimitive.Content
+      ref={ref}
+      className={cn(
+        'data-[state=closed]:animate-slide-to-right data-[state=open]:animate-slide-from-right fixed right-0 z-50 h-full border-l bg-background p-6 opacity-100 shadow-lg',
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <SheetPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-secondary">
+        <IconClose />
+        <span className="sr-only">Close</span>
+      </SheetPrimitive.Close>
+    </SheetPrimitive.Content>
+  </SheetPortal>
+))
+SheetContent.displayName = SheetPrimitive.Content.displayName
+
 const SheetHeader = ({
   className,
   ...props
@@ -115,6 +138,7 @@ export {
   SheetTrigger,
   SheetClose,
   SheetContent,
+  RightSheetContent,
   SheetHeader,
   SheetFooter,
   SheetTitle,

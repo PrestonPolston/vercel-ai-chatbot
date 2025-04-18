@@ -13,7 +13,6 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
-import { IconExternalLink } from '@/components/ui/icons'
 
 export interface UserMenuProps {
   user: Session['user']
@@ -26,7 +25,7 @@ function getUserInitials(name: string) {
 
 export function UserMenu({ user }: UserMenuProps) {
   const router = useRouter()
-
+  console.log(user)
   // Create a Supabase client configured to use cookies
   const supabase = createClientComponentClient()
 
@@ -57,10 +56,11 @@ export function UserMenu({ user }: UserMenuProps) {
                 {getUserInitials(user?.user_metadata.name ?? user?.email)}
               </div>
             )}
-            <span className="ml-2">{user?.user_metadata.name ?? '👋🏼'}</span>
+            <span className="ml-2">{user.user_metadata.name}</span>
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent sideOffset={8} align="start" className="w-[180px]">
+          <DropdownMenuSeparator />
           <DropdownMenuItem className="flex-col items-start">
             <div className="text-xs font-medium">
               {user?.user_metadata.name}
@@ -68,17 +68,6 @@ export function UserMenu({ user }: UserMenuProps) {
             <div className="text-xs text-zinc-500">{user?.email}</div>
           </DropdownMenuItem>
           <DropdownMenuSeparator />
-          <DropdownMenuItem asChild>
-            <a
-              href="https://vercel.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="inline-flex w-full items-center justify-between text-xs"
-            >
-              Vercel Homepage
-              <IconExternalLink className="ml-auto h-3 w-3" />
-            </a>
-          </DropdownMenuItem>
           <DropdownMenuItem onClick={signOut} className="text-xs">
             Log Out
           </DropdownMenuItem>
