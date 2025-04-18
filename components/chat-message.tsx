@@ -5,7 +5,7 @@ import remarkMath from 'remark-math'
 import { cn } from '@/lib/utils'
 import { CodeBlock } from '@/components/ui/codeblock'
 import { MemoizedReactMarkdown } from '@/components/markdown'
-import { IconOpenAI, IconUser } from '@/components/ui/icons'
+import { IconLuna, IconUser } from '@/components/ui/icons'
 import { ChatMessageActions } from '@/components/chat-message-actions'
 
 export interface ChatMessageProps {
@@ -26,7 +26,7 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
             : 'bg-primary text-primary-foreground'
         )}
       >
-        {message.role === 'user' ? <IconUser /> : <IconOpenAI />}
+        {message.role === 'user' ? <IconUser /> : <IconLuna />}
       </div>
       <div className="ml-4 flex-1 space-y-2 overflow-hidden px-1">
         <MemoizedReactMarkdown
@@ -34,7 +34,29 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
           remarkPlugins={[remarkGfm, remarkMath]}
           components={{
             p({ children }) {
-              return <p className="mb-2 last:mb-0">{children}</p>
+              return (
+                <p className="mb-2 text-foreground last:mb-0">{children}</p>
+              ) // Ensure paragraphs are dark
+            },
+            li({ children }) {
+              return <li className="text-foreground">{children}</li>
+            },
+            h1({ children }) {
+              return <h1 className="font-bold text-foreground">{children}</h1>
+            },
+            h2({ children }) {
+              return <h2 className="font-bold text-foreground">{children}</h2>
+            },
+
+            h3({ children }) {
+              return <h3 className="font-bold text-foreground">{children}</h3>
+            },
+            strong({ children }) {
+              return (
+                <strong className="font-bold text-foreground">
+                  {children}
+                </strong>
+              )
             },
             code({ node, inline, className, children, ...props }) {
               if (children.length) {
@@ -43,7 +65,6 @@ export function ChatMessage({ message, ...props }: ChatMessageProps) {
                     <span className="mt-1 animate-pulse cursor-default">▍</span>
                   )
                 }
-
                 children[0] = (children[0] as string).replace('`▍`', '▍')
               }
 
